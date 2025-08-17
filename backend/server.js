@@ -32,14 +32,29 @@ const whitelist = rawOrigins
   .map(o => o.trim())
   .filter(Boolean);
 
+// Helper to determine if origin matches whitelist entry (supports regex with prefix 're:')
+function originAllowed(origin) {
+  if (whitelist.length === 0) return true; // open if none specified
+  return whitelist.some(entry => {
+    if (entry.startsWith('re:')) {
+      try {
+        const pattern = new RegExp(entry.slice(3));
+        return pattern.test(origin);
+      } catch (e) {
+        console.warn('Invalid CORS regex pattern:', entry, e.message);
+        return false;
+      }
+    }
+    return entry === origin;
+  });
+}
+
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow non-browser or same-origin requests
-    if (whitelist.length === 0 || whitelist.includes(origin)) {
-      return callback(null, true);
-    }
+    if (!origin) return callback(null, true); // server-to-server or same-origin
+    if (originAllowed(origin)) return callback(null, true);
     console.warn(`CORS blocked origin: ${origin}`);
-    callback(new Error('Not allowed by CORS'));
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
@@ -49,6 +64,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // preflight
 app.use(express.json({ limit: '1mb' }));
+
+console.log('CORS whitelist:', whitelist.length ? whitelist : '(none - all origins allowed)');
 
 // --- Database Connection ---
 const connectDB = async () => {
