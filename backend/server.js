@@ -24,14 +24,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --- Middleware ---
-// Configurable CORS: set CORS_ORIGINS in env as comma separated list of allowed origins
-// Example: CORS_ORIGINS=https://app.example.com,https://admin.example.com
-const rawOrigins = process.env.CORS_ORIGINS || '';
-const whitelist = rawOrigins
-  .split(',')
-  .map(o => o.trim())
-  .filter(Boolean)
-  .map(o => o.startsWith('re:') ? o : o.replace(/\/$/, '')); // strip trailing slash for plain entries
+// CORS Allowed Origins (hardcoded as requested)
+// NOTE: CORS matches only scheme+host(+port); paths like '/menu' are not part of origin.
+const whitelist = [
+  'https://viransh-adminpanel.onrender.com',
+  'https://viransh-1.onrender.com'
+];
 
 // Helper to determine if origin matches whitelist entry (supports regex with prefix 're:')
 function originAllowed(origin) {
@@ -67,7 +65,7 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // preflight
 app.use(express.json({ limit: '1mb' }));
 
-console.log('CORS whitelist:', whitelist.length ? whitelist : '(none - all origins allowed)');
+console.log('CORS whitelist (hardcoded):', whitelist);
 
 // --- Database Connection ---
 const connectDB = async () => {
