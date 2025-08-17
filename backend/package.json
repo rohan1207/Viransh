@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "seed:admin": "node scripts/seedAdmin.js",
+    "debug:routes": "cross-env DIAG_ROUTES=1 node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,8 +19,9 @@
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0",
+    "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",

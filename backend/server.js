@@ -71,13 +71,46 @@ const connectDB = async () => {
 app.get('/api/health', (req,res)=>{
   res.json({ ok: true, uptime: process.uptime(), timestamp: Date.now() });
 });
-app.use('/api/menu', menuRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/address', addressRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/delivery', deliveryRoutes);
+
+// Wrap route mounting in try/catch to surface any path-to-regexp issues with more context
+function safeMount(pathBase, router) {
+  try {
+    app.use(pathBase, router);
+  } catch (e) {
+    console.error(`Failed mounting router at '${pathBase}':`, e);
+    throw e;
+  }
+}
+
+safeMount('/api/menu', menuRoutes);
+safeMount('/api/users', userRoutes);
+safeMount('/api/address', addressRoutes);
+safeMount('/api/orders', orderRoutes);
+safeMount('/api/cart', cartRoutes);
+safeMount('/api/admin', adminRoutes);
+safeMount('/api/delivery', deliveryRoutes);
+
+// Optional route diagnostics
+if (process.env.DIAG_ROUTES) {
+  const list = [];
+  app._router.stack.forEach(mw => {
+    if (mw.route && mw.route.path) {
+      Object.keys(mw.route.methods).forEach(method => {
+        list.push(`${method.toUpperCase()} ${mw.route.path}`);
+      });
+    } else if (mw.name === 'router' && mw.handle.stack) {
+      mw.handle.stack.forEach(handler => {
+        if (handler.route) {
+          Object.keys(handler.route.methods).forEach(method => {
+            list.push(`${method.toUpperCase()} ${handler.route.path}`);
+          });
+        }
+      });
+    }
+  });
+  console.log('Registered routes (diagnostic):');
+  list.sort().forEach(r => console.log('  ', r));
+}
 
 // --- Start Server ---
 const startServer = async () => {
