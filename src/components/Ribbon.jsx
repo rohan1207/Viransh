@@ -23,7 +23,7 @@ const Ribbon = () => {
         x: {
           repeat: Infinity,
           repeatType: "loop",
-          duration: isSmallScreen ? 15 : 25, // Faster on mobile, slower on desktop
+          duration: isSmallScreen ? 5 : 25, // Slightly faster on mobile (5s), same on desktop (25s)
           ease: "linear",
         },
       },
@@ -32,7 +32,7 @@ const Ribbon = () => {
 
   const Word = ({ children, isOutlined }) => (
     <span
-      className={`text-4xl sm:text-6xl lg:text-8xl font-black uppercase whitespace-nowrap mx-4 sm:mx-6 lg:mx-8 ${
+      className={`text-5xl sm:text-6xl lg:text-8xl font-black uppercase whitespace-nowrap mx-4 sm:mx-6 lg:mx-8 ${
         isOutlined ? "text-transparent" : "text-gray-900"
       }`}
       style={

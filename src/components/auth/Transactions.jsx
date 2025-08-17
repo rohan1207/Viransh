@@ -60,8 +60,9 @@ const Transactions = () => {
       </h2>
       {loading && <p>Loading transactions...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <table className="min-w-full leading-normal">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden relative">
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-amber-300 scrollbar-track-transparent md:overflow-visible" style={{WebkitOverflowScrolling:'touch'}}>
+        <table className="min-w-[680px] md:min-w-full leading-normal">
           <thead>
             <tr className="border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               <th className="px-5 py-3">Transaction ID</th>
@@ -119,6 +120,9 @@ const Transactions = () => {
             ))}
           </tbody>
         </table>
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-white to-transparent md:hidden" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-white to-transparent md:hidden" />
       </div>
     </div>
   );

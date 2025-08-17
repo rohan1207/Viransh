@@ -44,7 +44,7 @@ const SecondSection = () => {
     >
       {/* Background Text */}
       <motion.div
-        className="absolute top-8 sm:top-0 left-0 right-0 text-center text-[18vw] sm:text-[13vw] lg:text-[10vw] font-black text-gray-200/80 whitespace-nowrap z-0 leading-none select-none pointer-events-none"
+        className="absolute top-8 sm:top-0 left-0 right-0 text-center sm:text-[16vw] text-[13vw]   font-black text-gray-200/80 whitespace-nowrap z-0 leading-none select-none pointer-events-none"
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -84,7 +84,7 @@ const SecondSection = () => {
             viewport={{ once: true }}
           >
             <h2
-              className="text-4xl sm:text-4xl font-black text-gray-900 leading-tight mb-6 z-40 "
+              className="text-5xl sm:text-6xl font-black text-gray-900 leading-tight mb-6 z-40 "
               style={{ letterSpacing: "0.02em" }}
             >
               WONDERFUL DINING

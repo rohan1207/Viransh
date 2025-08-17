@@ -158,33 +158,60 @@ const Cart = () => {
                         x: 50,
                         transition: { duration: 0.3 },
                       }}
-                      className="p-6 flex items-center justify-between"
+                      className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
                     >
-                      <div className="flex items-center flex-grow">
+                      <div className="flex items-start sm:items-center flex-grow w-full">
                         <img
                           src={item.images?.[0] || "/placeholder-dish.jpg"}
                           alt={item.name}
-                          className="w-24 h-24 object-cover rounded-md mr-6 shadow-sm"
+                          className="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-md mr-4 sm:mr-6 shadow-sm flex-shrink-0"
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = "/placeholder-dish.jpg";
                           }}
                         />
-                        <div className="flex-grow">
-                          <h2 className="text-lg font-semibold text-gray-900">
+                        <div className="flex-grow min-w-0">
+                          <h2 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                             {item.name}
                           </h2>
-                          <p className="text-gray-500 text-sm">
-                            ₹{item.discountedPrice}
-                          </p>
+                          <p className="text-gray-500 text-sm">₹{item.discountedPrice}</p>
+                          {/* Mobile quantity & price inline (hidden on sm and up) */}
+                          <div className="mt-3 flex items-center justify-between sm:hidden gap-3">
+                            <div className="flex items-center border border-gray-300 rounded-full text-sm">
+                              <button
+                                onClick={() => updateQuantity(item.sku, item.quantity - 1)}
+                                className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-l-full"
+                              >
+                                -
+                              </button>
+                              <span className="px-3 py-1 font-medium text-gray-800">
+                                {item.quantity}
+                              </span>
+                              <button
+                                onClick={() => updateQuantity(item.sku, item.quantity + 1)}
+                                className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-r-full"
+                              >
+                                +
+                              </button>
+                            </div>
+                            <p className="font-semibold text-base text-gray-800">
+                              ₹{item.discountedPrice * item.quantity}
+                            </p>
+                            <button
+                              onClick={() => updateQuantity(item.sku, 0)}
+                              className="text-gray-400 hover:text-red-500"
+                              aria-label="Remove item"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-6">
+                      {/* Desktop quantity & price (hidden on mobile) */}
+                      <div className="hidden sm:flex items-center gap-6">
                         <div className="flex items-center border border-gray-300 rounded-full">
                           <button
-                            onClick={() =>
-                              updateQuantity(item.sku, item.quantity - 1)
-                            }
+                            onClick={() => updateQuantity(item.sku, item.quantity - 1)}
                             className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-l-full"
                           >
                             -
@@ -193,9 +220,7 @@ const Cart = () => {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() =>
-                              updateQuantity(item.sku, item.quantity + 1)
-                            }
+                            onClick={() => updateQuantity(item.sku, item.quantity + 1)}
                             className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-r-full"
                           >
                             +
@@ -207,6 +232,7 @@ const Cart = () => {
                         <button
                           onClick={() => updateQuantity(item.sku, 0)}
                           className="text-gray-400 hover:text-red-500"
+                          aria-label="Remove item"
                         >
                           <Trash2 size={20} />
                         </button>

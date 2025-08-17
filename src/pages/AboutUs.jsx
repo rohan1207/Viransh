@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
 import { FaStar, FaHeart } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +21,33 @@ const AboutUs = () => {
   const containerRef = useRef(null);
   const imageStackRef = useRef(null);
   const [imageContainerHeight, setImageContainerHeight] = useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+
+  // Function to handle next testimonial
+  const showNextTestimonial = () => {
+    setCurrentTestimonialIndex(
+      (prevIndex) => (prevIndex + 1) % testimonials.length
+    );
+  };
+
+  // Function to handle previous testimonial
+  const showPrevTestimonial = () => {
+    setCurrentTestimonialIndex((prevIndex) =>
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+    );
+  };
+
+  // Auto-slide effect for mobile testimonials
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      // Only run on mobile
+      const timer = setInterval(() => {
+        showNextTestimonial();
+      }, 3000); // Change testimonial every 3 seconds
+
+      return () => clearInterval(timer);
+    }
+  }, [currentTestimonialIndex]);
 
   // Restaurant Facilities data
   const facilities = [
@@ -311,7 +343,7 @@ const AboutUs = () => {
                 className="food-image absolute w-[65%] md:w-[500px] h-[200px] md:h-[350px] z-20"
                 style={{
                   top: "260px",
-                  right: "5%",
+                  right: "2%",
                   "@media (min-width: 768px)": {
                     top: "350px",
                     right: "calc(50% - 450px)",
@@ -601,11 +633,80 @@ const AboutUs = () => {
                 25,000+ happy food lovers visited our authentic restaurant
               </span>
             </div>
+
+            {/* Mobile Navigation Arrows */}
+            <div className="flex justify-center items-center gap-4 mt-6 md:hidden">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-400"
+                onClick={() => {
+                  const cards = document.querySelectorAll(
+                    ".testimonial-card-mobile"
+                  );
+                  const activeCard = document.querySelector(
+                    ".testimonial-card-mobile.active"
+                  );
+                  const currentIndex = Array.from(cards).indexOf(activeCard);
+                  const prevIndex =
+                    (currentIndex - 1 + cards.length) % cards.length;
+                  activeCard.classList.remove("active");
+                  cards[prevIndex].classList.add("active");
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-400"
+                onClick={() => {
+                  const cards = document.querySelectorAll(
+                    ".testimonial-card-mobile"
+                  );
+                  const activeCard = document.querySelector(
+                    ".testimonial-card-mobile.active"
+                  );
+                  const currentIndex = Array.from(cards).indexOf(activeCard);
+                  const nextIndex = (currentIndex + 1) % cards.length;
+                  activeCard.classList.remove("active");
+                  cards[nextIndex].classList.add("active");
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </motion.button>
+            </div>
           </motion.div>
         </div>
 
-        {/* Infinite Scrolling Testimonials */}
-        <div className="relative">
+        {/* Desktop Infinite Scrolling Testimonials */}
+        <div className="relative hidden md:block">
           <motion.div
             className="flex gap-6"
             animate={{
@@ -615,7 +716,7 @@ const AboutUs = () => {
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: testimonials.length * 8, // 8 seconds per testimonial
+                duration: testimonials.length * 8,
                 ease: "linear",
               },
             }}
@@ -623,30 +724,24 @@ const AboutUs = () => {
               animationPlayState: "paused",
             }}
             style={{
-              width: `${testimonials.length * 2 * 400}px`, // Double width for seamless loop
+              width: `${testimonials.length * 2 * 400}px`,
             }}
           >
-            {/* First set of testimonials */}
             {testimonials.map((testimonial) => (
               <motion.div
-                key={`first-${testimonial.id}`}
+                key={`desktop-${testimonial.id}`}
                 className="flex-shrink-0 w-96 bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 mx-3"
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* Rating Stars */}
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <FaStar key={i} className="text-sm" />
                   ))}
                 </div>
-
-                {/* Review Text */}
                 <p className="text-gray-700 leading-relaxed mb-4 text-sm line-clamp-4">
                   "{testimonial.review}"
                 </p>
-
-                {/* Reviewer Info */}
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -672,28 +767,22 @@ const AboutUs = () => {
                 </div>
               </motion.div>
             ))}
-
-            {/* Second set of testimonials for seamless loop */}
+            {/* Second set for seamless loop */}
             {testimonials.map((testimonial) => (
               <motion.div
-                key={`second-${testimonial.id}`}
-                className="flex-shrink-0 w-[85vw] md:w-96 bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 md:p-6 mx-2 md:mx-3"
+                key={`desktop-second-${testimonial.id}`}
+                className="flex-shrink-0 w-96 bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 mx-3"
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* Rating Stars */}
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <FaStar key={i} className="text-sm" />
                   ))}
                 </div>
-
-                {/* Review Text */}
                 <p className="text-gray-700 leading-relaxed mb-4 text-sm line-clamp-4">
                   "{testimonial.review}"
                 </p>
-
-                {/* Reviewer Info */}
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -721,9 +810,107 @@ const AboutUs = () => {
             ))}
           </motion.div>
 
-          {/* Gradient Overlays for smooth edges */}
+          {/* Desktop Gradient Overlays */}
           <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-amber-50 to-transparent pointer-events-none z-10"></div>
           <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-amber-50 to-transparent pointer-events-none z-10"></div>
+        </div>
+
+        {/* Mobile Navigation Arrows */}
+        <div className="md:hidden relative px-4 mb-8">
+          <div className="flex justify-between items-center">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={showPrevTestimonial}
+              className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-400 z-20"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={showNextTestimonial}
+              className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-400 z-20"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Mobile Single Card View */}
+        <div className="md:hidden relative px-4">
+          <div className="overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentTestimonialIndex}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+                className="w-full bg-white rounded-md shadow-lg p-6 mx-auto"
+              >
+                <div className="flex text-yellow-500 mb-4">
+                  {[...Array(testimonials[currentTestimonialIndex].rating)].map(
+                    (_, i) => (
+                      <FaStar key={i} className="text-sm" />
+                    )
+                  )}
+                </div>
+                <p className="text-gray-700 leading-relaxed mb-4 text-sm">
+                  "{testimonials[currentTestimonialIndex].review}"
+                </p>
+                <div className="border-t pt-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-gray-800 text-sm">
+                        {testimonials[currentTestimonialIndex].name}
+                      </h4>
+                      <p className="text-gray-500 text-xs">
+                        {testimonials[currentTestimonialIndex].role}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-gray-400 text-xs">
+                        {testimonials[currentTestimonialIndex].time}
+                      </p>
+                      <div className="flex items-center mt-1">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                        <span className="text-xs text-green-600 font-medium">
+                          Verified
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Bottom decorative element */}

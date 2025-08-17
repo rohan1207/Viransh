@@ -625,8 +625,10 @@ const Orders = () => {
       <h2 className="text-3xl font-bold mb-6 text-gray-800">My Orders</h2>
       {loading && <p>Loading orders...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <table className="min-w-full leading-normal">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden relative">
+        {/* Mobile horizontal scroll wrapper */}
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-amber-300 scrollbar-track-transparent md:overflow-visible group" style={{WebkitOverflowScrolling:'touch'}}>
+        <table className="min-w-[700px] md:min-w-full leading-normal">
           <thead>
             <tr className="border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               <th className="px-5 py-3">Order ID</th>
@@ -695,6 +697,10 @@ const Orders = () => {
             ))}
           </tbody>
         </table>
+        </div>
+        {/* Gradient edge cues on mobile */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-white to-transparent md:hidden" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-white to-transparent md:hidden" />
       </div>
       {renderTrackingModal()}
     </div>

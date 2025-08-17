@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -51,10 +51,13 @@ const Hero = () => {
           <p className="text-xl sm:text-2xl mt-4 sm:mt-6 text-white font-light tracking-wider">
             FOOD
           </p>
-          <button className="mt-6 sm:mt-8 flex items-center space-x-2 bg-black text-white px-6 py-3 sm:px-8 sm:py-4 rounded-md text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors duration-300">
+          <Link
+            to="/menu"
+            className="mt-6 sm:mt-8 flex items-center space-x-2 bg-black text-white px-6 py-3 sm:px-8 sm:py-4 rounded-md text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors duration-300"
+          >
             <span>ORDER NOW</span>
             <FiArrowRight />
-          </button>
+          </Link>
         </motion.div>
 
         <motion.div

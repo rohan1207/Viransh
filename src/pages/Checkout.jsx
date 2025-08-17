@@ -414,10 +414,15 @@ const Checkout = () => {
   const remainingCount = cartItems.length - VISIBLE_COUNT;
 
   return (
-    <div className="bg-gradient-to-b from-neutral-50 via-white to-neutral-100 min-h-screen font-sans">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
+    <div className="bg-gradient-to-b from-neutral-50 via-white to-neutral-100 min-h-screen font-sans mt-12">
+      <div
+        className={
+          "max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12 " +
+          (currentStep === 2 ? "pb-32 lg:pb-12" : "")
+        }
+      >
         {/* Stepper */}
-        <div className="flex flex-col md:flex-row items-center md:items-start md:justify-center gap-4 md:gap-8 mb-10">
+        <div className="flex flex-row items-center justify-center gap-6 md:gap-8 mb-10">
           {[1, 2].map((step) => {
             const label = step === 1 ? "Address" : "Review & Pay";
             const Icon = step === 1 ? MapPin : CreditCard;
@@ -444,7 +449,7 @@ const Checkout = () => {
                   {label}
                 </div>
                 {step === 1 && (
-                  <div className="hidden md:block w-16 h-[2px] bg-gradient-to-r from-amber-400 to-amber-600" />
+                  <div className="w-10 md:w-16 h-[2px] bg-gradient-to-r from-amber-400 to-amber-600" />
                 )}
               </div>
             );
@@ -564,7 +569,7 @@ const Checkout = () => {
                     Edit Address
                   </button>
                 </div>
-                <div className="space-y-4 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
+                <div className="space-y-4 max-h-[60vh] md:max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
                   {visibleItems.map((item) => (
                     <div
                       key={item.sku}
@@ -900,6 +905,22 @@ const Checkout = () => {
               </div>
             </form>
           </div>
+        </div>
+      )}
+      {/* Mobile sticky bottom pay bar (Step 2 only) */}
+      {currentStep === 2 && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-gray-200 px-4 py-3 flex items-center justify-between shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.08)]">
+          <div className="flex flex-col leading-tight">
+            <span className="text-xs uppercase tracking-wide text-gray-500">Total</span>
+            <span className="text-lg font-semibold text-gray-800">₹{(total || 0).toFixed(2)}</span>
+          </div>
+          <button
+            onClick={handlePayment}
+            disabled={submitting || cartItems.length === 0 || !selectedAddress}
+            className="flex-1 ml-4 py-3 rounded-xl font-semibold bg-amber-500 text-white shadow hover:bg-amber-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            {submitting ? "Processing..." : `Pay ₹${(total || 0).toFixed(2)}`}
+          </button>
         </div>
       )}
     </div>
