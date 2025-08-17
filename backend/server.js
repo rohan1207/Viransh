@@ -26,10 +26,17 @@ const PORT = process.env.PORT || 5000;
 // --- Middleware ---
 // CORS Allowed Origins (hardcoded as requested)
 // Raw entries may include trailing slashes or paths; they are normalized to scheme+host(+port)
-const rawAllowedOrigins = [
+let rawAllowedOrigins = [
   'https://viransh-adminpanel.onrender.com/',
   'https://viransh-1.onrender.com/menu'
 ];
+// Add local dev origins automatically when not in production
+if (process.env.NODE_ENV !== 'production') {
+  rawAllowedOrigins = rawAllowedOrigins.concat([
+    'http://localhost:5173',
+    'http://localhost:5174'
+  ]);
+}
 const whitelist = rawAllowedOrigins.map(entry => {
   try {
     const url = new URL(entry);
