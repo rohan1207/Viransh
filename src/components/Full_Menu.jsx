@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -109,7 +110,7 @@ const FullMenu = () => {
   useEffect(() => {
     const fetchMenuData = async () => {
       try {
-        const response = await fetch("/api/menu");
+  const response = await fetch(`${API_BASE_URL}/api/menu`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

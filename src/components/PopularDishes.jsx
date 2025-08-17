@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 import { motion, useAnimation } from "framer-motion";
 import AddToCartButton from "./AddToCartButton";
 import ProductDetailPopup from "./ProductDetailPopup";
@@ -101,7 +102,7 @@ const PopularDishes = () => {
     const fetchPopularDishes = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/menu");
+  const response = await fetch(`${API_BASE_URL}/api/menu`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

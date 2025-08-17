@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { API_BASE_URL } from "../config";
 import { useCart } from "../context/CartContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -39,7 +40,7 @@ const Cart = () => {
       setIsLoadingRecs(true);
       try {
         // Fetch all menu items
-        const response = await fetch("/api/menu");
+  const response = await fetch(`${API_BASE_URL}/api/menu`);
         const allCategories = await response.json();
         const allItems = allCategories.flatMap((cat) => cat.items);
 

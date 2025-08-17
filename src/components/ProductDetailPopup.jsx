@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   XIcon,
@@ -33,7 +34,7 @@ const ProductDetailPopup = ({ product, onClose }) => {
     const fetchRecommended = async () => {
       if (product?.recommended && product.recommended.length > 0) {
         try {
-          const response = await fetch("/api/menu");
+          const response = await fetch(`${API_BASE_URL}/api/menu`);
           const allCategories = await response.json();
           const allItems = allCategories.flatMap((cat) => cat.items);
 

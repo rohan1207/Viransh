@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import AddToCartButton from "./AddToCartButton";
@@ -14,7 +15,7 @@ const SpecialProposals = () => {
     const fetchSpecialItems = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/menu");
+  const response = await fetch(`${API_BASE_URL}/api/menu`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
