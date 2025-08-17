@@ -30,11 +30,13 @@ const rawOrigins = process.env.CORS_ORIGINS || '';
 const whitelist = rawOrigins
   .split(',')
   .map(o => o.trim())
-  .filter(Boolean);
+  .filter(Boolean)
+  .map(o => o.startsWith('re:') ? o : o.replace(/\/$/, '')); // strip trailing slash for plain entries
 
 // Helper to determine if origin matches whitelist entry (supports regex with prefix 're:')
 function originAllowed(origin) {
   if (whitelist.length === 0) return true; // open if none specified
+  const normalized = origin.replace(/\/$/, '');
   return whitelist.some(entry => {
     if (entry.startsWith('re:')) {
       try {
@@ -45,7 +47,7 @@ function originAllowed(origin) {
         return false;
       }
     }
-    return entry === origin;
+    return entry === normalized;
   });
 }
 
