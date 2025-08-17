@@ -25,11 +25,20 @@ const PORT = process.env.PORT || 5000;
 
 // --- Middleware ---
 // CORS Allowed Origins (hardcoded as requested)
-// NOTE: CORS matches only scheme+host(+port); paths like '/menu' are not part of origin.
-const whitelist = [
-  'https://viransh-adminpanel.onrender.com',
-  'https://viransh-1.onrender.com'
+// Raw entries may include trailing slashes or paths; they are normalized to scheme+host(+port)
+const rawAllowedOrigins = [
+  'https://viransh-adminpanel.onrender.com/',
+  'https://viransh-1.onrender.com/menu'
 ];
+const whitelist = rawAllowedOrigins.map(entry => {
+  try {
+    const url = new URL(entry);
+    return url.origin; // strips path/query
+  } catch (e) {
+    console.warn('Skipping invalid CORS origin entry:', entry, e.message);
+    return null;
+  }
+}).filter(Boolean);
 
 // Helper to determine if origin matches whitelist entry (supports regex with prefix 're:')
 function originAllowed(origin) {
@@ -65,7 +74,7 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // preflight
 app.use(express.json({ limit: '1mb' }));
 
-console.log('CORS whitelist (hardcoded):', whitelist);
+console.log('CORS whitelist (hardcoded, normalized):', whitelist);
 
 // --- Database Connection ---
 const connectDB = async () => {
@@ -128,6 +137,14 @@ if (process.env.DIAG_ROUTES) {
   console.log('Registered routes (diagnostic):');
   list.sort().forEach(r => console.log('  ', r));
 }
+
+// CORS error handler to return 403 instead of crashing
+app.use((err, req, res, next) => {
+  if (err && err.message === 'Not allowed by CORS') {
+    return res.status(403).json({ error: 'CORS blocked', origin: req.headers.origin });
+  }
+  next(err);
+});
 
 // --- Start Server ---
 const startServer = async () => {
