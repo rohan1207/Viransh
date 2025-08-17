@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { API_BASE_URL } from '../config.js';
 
 const AuthContext = createContext();
 
@@ -8,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  const API_URL = 'http://localhost:5000/api/users'; // Adjust if your backend URL is different
+  const API_URL = `${API_BASE_URL}/api/users`;
 
   useEffect(() => {
     if (token) {

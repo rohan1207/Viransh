@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
+import { API_BASE_URL } from '../../config.js';
 
 const Transactions = () => {
     const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user, token } = useContext(AuthContext);
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = `${API_BASE_URL}/api`;
 
   useEffect(() => {
         const fetchTransactions = async () => {

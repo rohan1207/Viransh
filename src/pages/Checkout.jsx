@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
+ import { API_BASE_URL } from '../config.js';
 
 const Checkout = () => {
   const { cartItems, total, clearCart } = useCart();
@@ -50,7 +51,8 @@ const Checkout = () => {
   const [locating, setLocating] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  const API_URL = "http://localhost:5000/api";
+ 
+  const API_URL = `${API_BASE_URL}/api`;
 
   useEffect(() => {
     const fetchAddresses = async () => {

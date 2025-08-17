@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import axios from "axios";
+import { API_BASE_URL } from '../config.js';
 import AuthContext from "./AuthContext";
 
 const CartContext = createContext();
@@ -25,7 +26,7 @@ export const CartProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { user, token } = useContext(AuthContext);
-  const API_URL = "http://localhost:5000/api";
+  const API_URL = `${API_BASE_URL}/api`;
 
   const fetchCart = useCallback(async () => {
     if (token) {

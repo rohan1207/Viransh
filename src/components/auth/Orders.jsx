@@ -11,6 +11,7 @@ import "leaflet/dist/leaflet.css";
 import Swal from "sweetalert2";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
+import { API_BASE_URL } from '../../config.js';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -117,7 +118,7 @@ const Orders = () => {
     return <Marker ref={markerRef} position={position} icon={riderIcon} />;
   };
   const sseRef = useRef(null);
-  const API_URL = "http://localhost:5000/api";
+  const API_URL = `${API_BASE_URL}/api`;
 
   useEffect(() => {
     const fetchOrders = async () => {

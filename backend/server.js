@@ -28,7 +28,8 @@ const PORT = process.env.PORT || 5000;
 // Raw entries may include trailing slashes or paths; they are normalized to scheme+host(+port)
 let rawAllowedOrigins = [
   'https://viransh-adminpanel.onrender.com/',
-  'https://viransh-1.onrender.com/menu'
+  'https://viransh-1.onrender.com/menu',
+  'https://viransh-deliverypanel.onrender.com'
 ];
 // Add local dev origins automatically when not in production
 if (process.env.NODE_ENV !== 'production') {
