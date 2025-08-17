@@ -102,7 +102,7 @@ const PopularDishes = () => {
     const fetchPopularDishes = async () => {
       try {
         setLoading(true);
-  const response = await fetch(`${API_BASE_URL}/api/menu`);
+        const response = await fetch(`${API_BASE_URL}/api/menu`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -198,7 +198,7 @@ const PopularDishes = () => {
           <p className="text-orange-500 font-semibold tracking-[0.2em] text-sm mb-4 uppercase">
             Customer Favorites
           </p>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-4">
             Popular Dishes
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">

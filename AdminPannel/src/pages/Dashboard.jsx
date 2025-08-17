@@ -69,7 +69,7 @@ const StatCard = ({ label, value, icon, accent }) => (
     className={`relative overflow-hidden rounded-2xl p-6 text-white bg-gradient-to-br ${accent} shadow-lg`}
   >
     <div className="relative z-10">
-      <div className="text-5xl mb-4">{icon}</div>
+      <div className="text-4xl mb-4">{icon}</div>
       <div className="text-3xl font-bold tracking-tight">{value}</div>
       <div className="mt-1 text-sm font-medium uppercase tracking-wider opacity-80">
         {label}

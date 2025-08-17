@@ -38,13 +38,13 @@ const categoryIcons = {
 
 const MenuItem = ({ item, onSelect }) => (
   <motion.div
-    className="relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex items-start gap-6 p-6 mb-4 cursor-pointer"
+    className="relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-4 sm:p-6 mb-4 cursor-pointer"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
     onClick={() => onSelect(item)}
   >
-    <div className="w-24 h-24 rounded-md overflow-hidden flex-shrink-0 shadow-lg bg-gray-200">
+    <div className="w-full sm:w-24 h-48 sm:h-24 rounded-md overflow-hidden flex-shrink-0 shadow-lg bg-gray-200">
       {item.images && item.images[0] ? (
         <img
           src={item.images[0]}
@@ -57,10 +57,12 @@ const MenuItem = ({ item, onSelect }) => (
         </div>
       )}
     </div>
-    <div className="flex-grow flex flex-col">
-      <div className="flex items-baseline justify-between mb-2">
-        <h3 className="font-semibold text-gray-800 text-xl">{item.name}</h3>
-        <div className="flex-grow mx-4 border-b-2 border-dotted border-gray-300"></div>
+    <div className="flex-grow flex flex-col mt-4 sm:mt-0">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-2">
+        <h3 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 sm:mb-0">
+          {item.name}
+        </h3>
+        <div className="hidden sm:block flex-grow mx-4 border-b-2 border-dotted border-gray-300"></div>
         <div className="flex items-baseline">
           <p className="font-bold text-gray-800 text-lg">
             ₹{item.discountedPrice}
@@ -73,18 +75,18 @@ const MenuItem = ({ item, onSelect }) => (
       <p className="text-gray-600 text-sm leading-relaxed mb-2">
         {item.description}
       </p>
-      <div className="flex items-center text-sm text-gray-500 gap-4">
+      <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 gap-2 sm:gap-4">
         <div className="flex items-center gap-1">
-          <Star className="w-4 h-4 text-yellow-500" />
+          <Star className="w-3 sm:w-4 h-3 sm:h-4 text-yellow-500" />
           <span>{item.ratings}</span>
         </div>
-        <span>•</span>
+        <span className="hidden sm:inline">•</span>
         <span>Serves {item.serves}</span>
       </div>
-      <div className="mt-4 flex justify-between items-center">
+      <div className="mt-4 flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-between items-stretch sm:items-center">
         <button
           onClick={(e) => {
-            e.stopPropagation(); // prevent card click from firing again
+            e.stopPropagation();
             onSelect(item);
           }}
           className="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors"
@@ -110,7 +112,7 @@ const FullMenu = () => {
   useEffect(() => {
     const fetchMenuData = async () => {
       try {
-  const response = await fetch(`${API_BASE_URL}/api/menu`);
+        const response = await fetch(`${API_BASE_URL}/api/menu`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -194,54 +196,56 @@ const FullMenu = () => {
           <p className="text-orange-400 font-semibold tracking-[0.3em] text-sm mb-4">
             - CHOOSE DELICIOUS -
           </p>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 tracking-wide">
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-wide">
             DELICIOUS MENU
           </h2>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-12">
-          {categories.map((category) => {
-            const Icon = categoryIcons[category] || Utensils;
-            return (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`flex flex-col items-center gap-2 transition-all duration-300 group cursor-pointer ${
-                  activeCategory === category
-                    ? "text-orange-500"
-                    : "text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                <div
-                  className={`p-3 rounded-full transition-all duration-300 ${
+        <div className="overflow-x-auto pb-4 mb-8 sm:mb-12 -mx-4 px-4 sm:px-0 sm:overflow-visible">
+          <div className="flex sm:flex-wrap sm:justify-center gap-3 sm:gap-8 min-w-max sm:min-w-0">
+            {categories.map((category) => {
+              const Icon = categoryIcons[category] || Utensils;
+              return (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 group cursor-pointer ${
                     activeCategory === category
-                      ? "bg-orange-100"
-                      : "bg-gray-200 group-hover:bg-gray-300"
+                      ? "text-orange-500"
+                      : "text-gray-400 hover:text-gray-600"
                   }`}
                 >
-                  <Icon size={28} />
-                </div>
-                <span className="font-semibold text-xs sm:text-sm tracking-wide">
-                  {category}
-                </span>
-                {activeCategory === category && (
-                  <div className="w-3/4 h-0.5 bg-orange-500 rounded-full mt-1" />
-                )}
-              </button>
-            );
-          })}
+                  <div
+                    className={`p-2 sm:p-3 rounded-full transition-all duration-300 ${
+                      activeCategory === category
+                        ? "bg-orange-100"
+                        : "bg-gray-200 group-hover:bg-gray-300"
+                    }`}
+                  >
+                    <Icon size={24} className="sm:w-7 sm:h-7" />
+                  </div>
+                  <span className="font-semibold text-[10px] sm:text-sm tracking-wide text-center max-w-[80px] sm:max-w-none truncate">
+                    {category}
+                  </span>
+                  {activeCategory === category && (
+                    <div className="w-3/4 h-0.5 bg-orange-500 rounded-full mt-0.5 sm:mt-1" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Search and Filter Controls */}
-        <div className="max-w-4xl mx-auto mb-12 p-4 bg-white rounded-md shadow-md flex flex-col sm:flex-row items-center gap-4">
+        <div className="max-w-4xl mx-auto mb-8 sm:mb-12 p-3 sm:p-4 bg-white rounded-md shadow-md flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           <div className="relative flex-grow w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 sm:w-5 h-4 sm:h-5 text-gray-400" />
             <input
               type="text"
               placeholder={`Search in ${activeCategory}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+              className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
             />
           </div>
           <div className="relative w-full sm:w-64">
@@ -251,12 +255,12 @@ const FullMenu = () => {
                   .getElementById("sort-dropdown")
                   .classList.toggle("hidden")
               }
-              className="w-full flex items-center justify-between px-4 py-3 bg-white border-2 border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all"
+              className="w-full flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-2 border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all text-sm"
             >
               <span className="font-medium text-gray-700">
                 Sort by: {sortBy.replace("-", " ")}
               </span>
-              <ChevronsUpDown className="text-gray-400" />
+              <ChevronsUpDown className="text-gray-400 w-4 sm:w-5 h-4 sm:h-5" />
             </button>
             <div
               id="sort-dropdown"

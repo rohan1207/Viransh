@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
- import { API_BASE_URL } from '../config.js';
+import { API_BASE_URL } from "../config.js";
 
 const Checkout = () => {
   const { cartItems, total, clearCart } = useCart();
@@ -51,7 +51,6 @@ const Checkout = () => {
   const [locating, setLocating] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
- 
   const API_URL = `${API_BASE_URL}/api`;
 
   useEffect(() => {
@@ -725,7 +724,6 @@ const Checkout = () => {
       {/* Address Modal */}
       {showAddressForm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
-          
           <div className="relative bg-white w-full max-w-2xl max-h-[85vh] flex flex-col rounded-3xl p-6 md:p-8 shadow-[0_16px_48px_-12px_rgba(0,0,0,0.25)] border border-amber-100/60">
             <div className="flex justify-between items-center mb-4 shrink-0">
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight flex items-center gap-2">
@@ -737,13 +735,12 @@ const Checkout = () => {
               >
                 <X className="w-6 h-6" />
               </button>
-              
             </div>
             <form
               onSubmit={handleAddressSubmit}
               className="space-y-4 overflow-y-auto pr-2 custom-scrollbar flex-1"
             >
-                <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={useMyLocation}
@@ -866,7 +863,7 @@ const Checkout = () => {
                 rows={3}
                 className="w-full p-3.5 bg-neutral-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/60 text-gray-800"
               />
-            
+
               {newAddress.latitude && newAddress.longitude && (
                 <div className="h-64 rounded-xl overflow-hidden border border-gray-200">
                   <MapContainer

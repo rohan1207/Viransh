@@ -11,7 +11,7 @@ import "leaflet/dist/leaflet.css";
 import Swal from "sweetalert2";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
-import { API_BASE_URL } from '../../config.js';
+import { API_BASE_URL } from "../../config.js";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);

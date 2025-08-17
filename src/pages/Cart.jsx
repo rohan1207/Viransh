@@ -40,7 +40,7 @@ const Cart = () => {
       setIsLoadingRecs(true);
       try {
         // Fetch all menu items
-  const response = await fetch(`${API_BASE_URL}/api/menu`);
+        const response = await fetch(`${API_BASE_URL}/api/menu`);
         const allCategories = await response.json();
         const allItems = allCategories.flatMap((cat) => cat.items);
 

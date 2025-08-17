@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 const RestaurantFacilities = () => {
   const facilities = [
@@ -7,20 +7,20 @@ const RestaurantFacilities = () => {
       id: 1,
       title: "SPACIOUS & COMFORTABLE SEATING",
       description: "Perfect for families, friends, and group gatherings.",
-      image: "/dining_space.png"
+      image: "/dining_space.png",
     },
     {
       id: 2,
       title: "HYGIENIC & FRESHLY PREPARED MEALS",
       description: "Every dish made with care and cleanliness.",
-      image: "/fresh_food.png"
+      image: "/fresh_food.png",
     },
     {
       id: 3,
       title: "AMPLE PARKING SPACE",
       description: "Hassle-free parking for a relaxed dining experience.",
-      image: "/parking_space.webp"
-    }
+      image: "/parking_space.webp",
+    },
   ];
 
   // Animation variants
@@ -30,16 +30,16 @@ const RestaurantFacilities = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 50,
-      scale: 0.9
+      scale: 0.9,
     },
     visible: {
       opacity: 1,
@@ -47,27 +47,27 @@ const RestaurantFacilities = () => {
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const imageVariants = {
     rest: { scale: 1 },
-    hover: { 
+    hover: {
       scale: 1.05,
       transition: {
         duration: 0.3,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
     <div className="bg-gray-50 py-16 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -76,13 +76,13 @@ const RestaurantFacilities = () => {
           <div className="text-orange-400 text-sm font-medium tracking-widest mb-2">
             - RESTAURANT FACILITIES -
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-gray-800 tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-black text-gray-800 tracking-tight">
             RESTAURANT SPECIAL
           </h1>
         </motion.div>
 
         {/* Facilities Grid */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
           variants={containerVariants}
           initial="hidden"
@@ -96,27 +96,25 @@ const RestaurantFacilities = () => {
               whileHover={{ y: -5 }}
             >
               {/* Image Container */}
-              <motion.div 
+              <motion.div
                 className="relative h-64 overflow-hidden"
                 variants={imageVariants}
                 initial="rest"
                 whileHover="hover"
               >
-                <img 
+                <img
                   src={facility.image}
                   alt={facility.title}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                
+
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                
-               
               </motion.div>
 
               {/* Content */}
-              <motion.div 
+              <motion.div
                 className="p-6 text-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -134,7 +132,7 @@ const RestaurantFacilities = () => {
         </motion.div>
 
         {/* Decorative elements */}
-        <motion.div 
+        <motion.div
           className="flex justify-center mt-12"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
